@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Returns — Librarian Portal</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Shared Design System & Styles -->
+    <link rel="stylesheet" href="../../shared/design-system.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="dashboard-wrapper">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div>
+            <div class="sidebar-logo">
+                <i class="fa-solid fa-book-open-reader"></i>
+                <h2>Library<strong>Hub</strong></h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="index.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="issue-book.html">
+                            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                            <span>Issue Book</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="return-book.html">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>Return Book</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="books.html">
+                            <i class="fa-solid fa-book"></i>
+                            <span>Catalog & Copies</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="students.html">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Students Registry</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="fine.html">
+                            <i class="fa-solid fa-receipt"></i>
+                            <span>Fine Collection</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html">
+                            <i class="fa-solid fa-chart-column"></i>
+                            <span>Circulation Reports</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html">
+                            <i class="fa-solid fa-gear"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="sidebar-footer">
+            <a href="#" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="topbar-title">
+                    <h1>Process Book Returns</h1>
+                    <p>Check in returned copies, compute dynamic late fines, and release inventory.</p>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="user-profile">
+                    <div class="profile-avatar" id="staffAvatar">S</div>
+                    <div class="profile-info">
+                        <span class="profile-name" id="staffName">Soham</span>
+                        <span class="profile-role" id="staffRole">Librarian</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+
+            <!-- Return Table Card -->
+            <section class="table-card">
+                <div class="table-card-header">
+                    <div>
+                        <h3>Pending Returns (<span id="totalPendingCount">0</span>)</h3>
+                        <p style="font-size: 0.8rem; color: var(--color-text-muted);">Active loans currently checked out to patrons.</p>
+                    </div>
+
+                    <div class="search-box" style="max-width: 320px;">
+                        <i class="fa-solid fa-magnifying-glass" style="color: var(--color-text-muted);"></i>
+                        <input type="text" id="searchReturn" placeholder="Search by student, book, or loan ID...">
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Loan ID</th>
+                                <th>Patron / Student</th>
+                                <th>Book Title</th>
+                                <th>Issue Date</th>
+                                <th>Due Date</th>
+                                <th>Est. Fine</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="returnTableBody">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 28px; color: var(--color-text-muted);">
+                                    Loading active loans...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<!-- ================= RETURN MODAL ================= -->
+<div class="modal-overlay" id="returnBookModal">
+    <div class="modal-box" style="max-width: 480px;">
+        <div class="modal-header">
+            <h2><i class="fa-solid fa-rotate-left" style="color: var(--color-primary);"></i> Confirm Book Return</h2>
+            <button class="close-modal-btn" id="closeReturnModal" aria-label="Close dialog">&times;</button>
+        </div>
+
+        <form id="returnForm">
+            <!-- Details Overview -->
+            <div style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
+                    <span style="font-size: 0.82rem; color: var(--color-text-muted);">Loan Reference:</span>
+                    <strong id="modalIssueId" style="color: var(--color-text);">#—</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
+                    <span style="font-size: 0.82rem; color: var(--color-text-muted);">Student Patron:</span>
+                    <strong id="modalStudentName" style="color: var(--color-text);">—</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
+                    <span style="font-size: 0.82rem; color: var(--color-text-muted);">Book Title:</span>
+                    <strong id="modalBookTitle" style="color: var(--color-text); text-align: right; max-width: 260px;">—</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                    <span style="font-size: 0.82rem; color: var(--color-text-muted);">Due Date:</span>
+                    <span id="modalDueDate" style="font-weight: 600; color: var(--color-text);">—</span>
+                </div>
+            </div>
+
+            <!-- Overdue Fine Alert Banner (conditional) -->
+            <div id="fineAlertBanner" style="display:none; background: var(--color-warning-bg); border: 1px solid var(--color-warning-border); border-radius: var(--radius-md); padding: 14px; margin-bottom: 20px;">
+                <div style="display:flex; align-items:center; gap:10px; color: var(--color-warning-text); font-weight:700; font-size: 0.92rem; margin-bottom: 4px;">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>Overdue Return (<span id="modalLateDays">0</span> days late)</span>
+                </div>
+                <p style="font-size: 0.82rem; color: var(--color-warning-text); line-height: 1.4;">
+                    Calculated fine of <strong id="modalFineAmount">₹0</strong> will be recorded against this patron. Rate: ₹5 per late day.
+                </p>
+            </div>
+
+            <div id="noFineBanner" style="display:none; background: var(--color-success-bg); border: 1px solid var(--color-success-border); border-radius: var(--radius-md); padding: 12px; margin-bottom: 20px; color: var(--color-success-text); font-size: 0.85rem; font-weight: 500;">
+                <i class="fa-solid fa-circle-check"></i> Book returned on time. Zero overdue fines apply.
+            </div>
+
+            <div class="form-buttons">
+                <button type="button" class="btn-secondary" id="cancelReturnModal">Cancel</button>
+                <button type="submit" class="btn-primary" id="submitReturnBtn">
+                    <i class="fa-solid fa-check"></i> Process Return
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="../../shared/ui-components.js"></script>
+<script src="js/api-client.js"></script>
+<script src="js/return-book.js"></script>
+
+</body>
+</html>

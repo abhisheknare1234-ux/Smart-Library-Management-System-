@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Backups & Point-in-Time Recovery — Admin</title>
+
+    <!-- Bootstrap CSS & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Shared Design System & Admin Theme -->
+    <link rel="stylesheet" href="../../shared/design-system.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="js/db.js"></script>
+    <script src="js/auth.js"></script>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h3>Library Admin</h3>
+    <a href="admin_page.html"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a href="manage_librarians.html"><i class="bi bi-person-workspace"></i> Manage Librarians</a>
+    <a href="manage_books.html"><i class="bi bi-book"></i> Manage Books</a>
+    <a href="manage_members.html"><i class="bi bi-people"></i> Manage Members</a>
+    <a href="reports.html"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
+    <a href="fine_collection.html"><i class="bi bi-cash-stack"></i> Fine Collection</a>
+    <a href="backup.html" class="active"><i class="bi bi-database"></i> Backup Database</a>
+    <a href="logout.html"><i class="bi bi-box-arrow-right"></i> Logout</a>
+</div>
+
+<!-- Content -->
+<div class="content">
+    <div class="topbar">
+        <h2>Database Backups & Recovery</h2>
+        <p>Generate full transactional SQL dumps and perform verified point-in-time recoveries.</p>
+    </div>
+
+    <!-- Database Info Card -->
+    <div class="card p-4 mt-3 shadow-sm border-0" style="border-radius: 12px;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="mb-0 fw-bold" style="font-size: 1.15rem;">
+                <i class="bi bi-hdd-network text-primary me-2"></i> Relational Storage Status
+            </h4>
+            <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">
+                <i class="fa-solid fa-circle-check me-1"></i> Engine Healthy
+            </span>
+        </div>
+
+        <table class="table table-bordered mb-4">
+            <tbody>
+                <tr>
+                    <th style="width: 260px; background: #f8fafc;">Database Engine</th>
+                    <td>SQLite 3 / MySQL InnoDB (Dual-Dialect Normalized Architecture)</td>
+                </tr>
+                <tr>
+                    <th style="background: #f8fafc;">Relational Tables</th>
+                    <td>14 Normalized Tables (Strict FKs, Cascade Constraints, Compound Indexes)</td>
+                </tr>
+                <tr>
+                    <th style="background: #f8fafc;">Latest Snapshot</th>
+                    <td id="lastBackup" class="fw-semibold">Loading...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="d-flex gap-3">
+            <button id="btnCreateBackup" class="btn btn-primary px-4 py-2 fw-semibold" onclick="createBackupSnapshot()">
+                <i class="bi bi-cloud-arrow-down me-2"></i> Create Full Backup Dump
+            </button>
+        </div>
+    </div>
+
+    <!-- Backup History Card -->
+    <div class="card p-4 mt-4 shadow-sm border-0" style="border-radius: 12px;">
+        <h4 class="mb-3 fw-bold" style="font-size: 1.15rem;">
+            <i class="bi bi-clock-history text-secondary me-2"></i> Point-in-Time Snapshot History
+        </h4>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date & Time</th>
+                        <th>SQL Dump File</th>
+                        <th>File Size</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="historyTable">
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">Loading backup history...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../shared/ui-components.js"></script>
+
+<script>
+const API = "http://localhost:5000/api/backups";
+
+function getToken() {
+    return sessionStorage.getItem("token") || localStorage.getItem("token");
+}
+
+async function renderBackupHistory() {
+    const historyTable = document.getElementById("historyTable");
+    const lastBackupEl = document.getElementById("lastBackup");
+
+    try {
+        const response = await fetch(API, {
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+            LibraryUI.showToast(data.message || "Failed to load backups.", "error");
+            return;
+        }
+
+        historyTable.innerHTML = "";
+
+        if (!data.backups || data.backups.length === 0) {
+            historyTable.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-muted">No snapshot backups found. Create your first database backup above.</td></tr>`;
+            if (lastBackupEl) lastBackupEl.innerText = "None recorded";
+            return;
+        }
+
+        if (lastBackupEl) lastBackupEl.innerText = new Date(data.backups[0].date).toLocaleString();
+
+        data.backups.forEach(item => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><strong>${new Date(item.date).toLocaleString()}</strong></td>
+                <td>
+                    <a href="${API}/${item.id}/download" class="text-decoration-none fw-semibold" target="_blank">
+                        <i class="bi bi-file-earmark-code me-1"></i> ${item.fileName}
+                    </a>
+                </td>
+                <td><span class="badge bg-light text-dark border">${item.size}</span></td>
+                <td>
+                    <span class="badge bg-success-subtle text-success border border-success-subtle">
+                        <i class="fa-solid fa-check me-1"></i> ${item.status}
+                    </span>
+                </td>
+                <td>
+                    <div class="d-flex gap-2">
+                        <a href="${API}/${item.id}/download" class="btn btn-sm btn-outline-secondary" target="_blank" title="Download SQL Dump">
+                            <i class="bi bi-download"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-danger restore-btn" data-id="${item.id}" data-file="${item.fileName}" title="Restore Database">
+                            <i class="bi bi-arrow-clockwise"></i> Restore
+                        </button>
+                    </div>
+                </td>
+            `;
+            historyTable.appendChild(tr);
+        });
+
+        // Bind Restore Buttons
+        historyTable.querySelectorAll(".restore-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-id");
+                const file = btn.getAttribute("data-file");
+                confirmAndRestore(id, file);
+            });
+        });
+
+    } catch (err) {
+        console.error(err);
+        historyTable.innerHTML = `<tr><td colspan="5" class="text-center text-danger py-4">Unable to fetch backup history from server.</td></tr>`;
+    }
+}
+
+async function createBackupSnapshot() {
+    const btn = document.getElementById("btnCreateBackup");
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin me-2"></i> Dumping SQL Tables...`;
+
+    try {
+        const response = await fetch(API, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            LibraryUI.showToast("Database SQL dump generated and archived successfully!", "success");
+            await renderBackupHistory();
+        } else {
+            LibraryUI.showToast(data.message || "Backup creation failed.", "error");
+        }
+    } catch (err) {
+        console.error(err);
+        LibraryUI.showToast("Network error creating database backup.", "error");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="bi bi-cloud-arrow-down me-2"></i> Create Full Backup Dump`;
+    }
+}
+
+function confirmAndRestore(backupId, fileName) {
+    LibraryUI.confirmDialog({
+        title: "Point-in-Time Database Recovery",
+        message: `WARNING: Restoring from "${fileName}" will reset the database schema and replace existing records with this snapshot. Are you sure you want to perform a point-in-time restore?`,
+        confirmText: "Yes, Restore Database",
+        isDanger: true,
+        onConfirm: async () => {
+            LibraryUI.showToast("Executing database point-in-time recovery...", "info", 6000);
+
+            try {
+                const response = await fetch(`${API}/${backupId}/restore`, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${getToken()}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    LibraryUI.showToast("Database point-in-time recovery completed successfully! All tables restored.", "success", 6000);
+                    await renderBackupHistory();
+                } else {
+                    LibraryUI.showToast(data.message || "Restore execution failed.", "error");
+                }
+            } catch (err) {
+                console.error("Restore error:", err);
+                LibraryUI.showToast("Network error restoring database.", "error");
+            }
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", renderBackupHistory);
+</script>
+
+</body>
+</html>

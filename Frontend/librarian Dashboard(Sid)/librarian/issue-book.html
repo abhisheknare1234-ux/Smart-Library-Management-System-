@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Book — Circulation Desk</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Shared Design System & Styles -->
+    <link rel="stylesheet" href="../../shared/design-system.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .circulation-grid {
+            display: grid;
+            grid-template-columns: 420px 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+        .issue-card {
+            background: var(--color-surface, #ffffff);
+            border: 1px solid var(--color-border, #e2e8f0);
+            border-radius: var(--radius-lg, 12px);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .issue-card h2 {
+            font-family: var(--font-heading, 'Plus Jakarta Sans', sans-serif);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--color-text, #0f172a);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .issue-card p.subtitle {
+            font-size: 0.82rem;
+            color: var(--color-text-muted, #64748b);
+            margin-bottom: 20px;
+        }
+        .details-box {
+            background: var(--color-bg, #f8fafc);
+            border: 1px solid var(--color-border, #e2e8f0);
+            border-radius: var(--radius-md, 8px);
+            padding: 12px 14px;
+            font-size: 0.82rem;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .details-box .detail-row {
+            display: flex;
+            justify-content: space-between;
+        }
+        .details-box .detail-label {
+            color: var(--color-text-muted, #64748b);
+        }
+        .details-box .detail-val {
+            font-weight: 600;
+            color: var(--color-text, #0f172a);
+        }
+        @media (max-width: 1024px) {
+            .circulation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-wrapper">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div>
+            <div class="sidebar-logo">
+                <i class="fa-solid fa-book-open-reader"></i>
+                <h2>Library<strong>Hub</strong></h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="index.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="issue-book.html">
+                            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                            <span>Issue Book</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="return-book.html">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>Return Book</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="books.html">
+                            <i class="fa-solid fa-book"></i>
+                            <span>Catalog & Copies</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="students.html">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Students Registry</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="fine.html">
+                            <i class="fa-solid fa-receipt"></i>
+                            <span>Fine Collection</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html">
+                            <i class="fa-solid fa-chart-column"></i>
+                            <span>Circulation Reports</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html">
+                            <i class="fa-solid fa-gear"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="sidebar-footer">
+            <a href="#" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="main-content">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="topbar-title">
+                    <h1>Book Loan Checkout</h1>
+                    <p>Issue library copies to registered patrons with real-time concurrency locking.</p>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <div class="user-profile">
+                    <div class="profile-avatar" id="staffAvatar">S</div>
+                    <div class="profile-info">
+                        <span class="profile-name" id="staffName">Soham</span>
+                        <span class="profile-role" id="staffRole">Librarian</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <div class="circulation-grid">
+                
+                <!-- Issue Form Card -->
+                <section class="issue-card">
+                    <h2><i class="fa-solid fa-plus-circle" style="color: var(--color-primary);"></i> New Loan Checkout</h2>
+                    <p class="subtitle">Complete patron lookup and book assignment in seconds.</p>
+
+                    <form id="issueForm">
+                        <!-- Step 1: Member -->
+                        <div class="form-group">
+                            <label for="studentSelect">1. Select Student / Patron *</label>
+                            <select id="studentSelect" required>
+                                <option value="">Loading student registry...</option>
+                            </select>
+                        </div>
+
+                        <div id="studentDetailBox" class="details-box" style="display:none;">
+                            <div class="detail-row">
+                                <span class="detail-label">Member ID:</span>
+                                <span class="detail-val" id="dispStudentId">—</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Department:</span>
+                                <span class="detail-val" id="dispStudentDept">—</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Contact:</span>
+                                <span class="detail-val" id="dispStudentPhone">—</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Book -->
+                        <div class="form-group">
+                            <label for="bookSelect">2. Select Catalog Book *</label>
+                            <select id="bookSelect" required>
+                                <option value="">Loading book catalog...</option>
+                            </select>
+                        </div>
+
+                        <div id="bookDetailBox" class="details-box" style="display:none;">
+                            <div class="detail-row">
+                                <span class="detail-label">Author:</span>
+                                <span class="detail-val" id="dispBookAuthor">—</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Category:</span>
+                                <span class="detail-val" id="dispBookCategory">—</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Available Copies:</span>
+                                <span class="detail-val" id="dispBookCopies" style="color: var(--color-success-text);">—</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Dates -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="form-group">
+                                <label for="issueDate">Issue Date</label>
+                                <input type="date" id="issueDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="returnDate">Due Date (+14d)</label>
+                                <input type="date" id="returnDate" required>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 16px;">
+                            <button type="submit" id="submitIssueBtn" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px;">
+                                <i class="fa-solid fa-check"></i> Confirm Loan & Checkout
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Active Issues & Loans Table -->
+                <section class="table-card">
+                    <div class="table-card-header">
+                        <h3>Active & Recent Loans (<span id="totalIssuedCount">0</span>)</h3>
+                        <div class="search-box" style="max-width: 260px;">
+                            <i class="fa-solid fa-magnifying-glass" style="color: var(--color-text-muted);"></i>
+                            <input type="text" id="searchIssue" placeholder="Filter by student, book...">
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Loan ID</th>
+                                    <th>Student</th>
+                                    <th>Book Title</th>
+                                    <th>Issue Date</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="issuesTableBody">
+                                <tr>
+                                    <td colspan="7" style="text-align: center; padding: 24px; color: var(--color-text-muted);">
+                                        Loading active issues...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Scripts -->
+<script src="../../shared/ui-components.js"></script>
+<script src="js/api-client.js"></script>
+<script src="js/issue-book.js"></script>
+
+</body>
+</html>

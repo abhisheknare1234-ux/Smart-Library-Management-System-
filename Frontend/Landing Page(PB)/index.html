@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Hub — Modern University Library Platform</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Shared Design Tokens & Styles -->
+    <link rel="stylesheet" href="../shared/design-system.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="lh-landing-header">
+        <nav class="lh-navbar">
+            <a href="#home" class="lh-brand">
+                <div class="lh-brand-icon">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                </div>
+                <div class="lh-brand-text">
+                    <span class="lh-brand-title">Library<strong>Hub</strong></span>
+                    <span class="lh-brand-subtitle">Campus Management System</span>
+                </div>
+            </a>
+
+            <div class="lh-nav-menu">
+                <a href="#home" class="lh-nav-link active">Home</a>
+                <a href="#metrics" class="lh-nav-link">Overview</a>
+                <a href="#portals" class="lh-nav-link">Role Portals</a>
+                <a href="#workflow" class="lh-nav-link">Workflows</a>
+            </div>
+
+            <div class="lh-nav-actions">
+                <span class="lh-system-status" title="Backend operational">
+                    <span class="lh-status-dot"></span> Online
+                </span>
+                <a href="#portals" class="lh-btn lh-btn-primary lh-btn-sm">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ================= HERO ================= -->
+    <main>
+        <section id="home" class="lh-hero-section">
+            <div class="lh-hero-badge">
+                <i class="fa-solid fa-shield-check"></i> Verified Production System
+            </div>
+            <h1 class="lh-hero-title">
+                Next-Generation Library Platform for Modern Campuses
+            </h1>
+            <p class="lh-hero-subtitle">
+                A unified, high-performance platform for catalog discovery, rapid desk circulation, 
+                dynamic overdue fines, and role-based access for Administrators, Librarians, and Students.
+            </p>
+
+            <div class="lh-hero-ctas">
+                <a href="../Abhishek code (Member)/login.html" class="lh-btn lh-btn-primary lh-btn-lg">
+                    <i class="fa-solid fa-graduation-cap"></i> Enter Member Portal
+                </a>
+                <a href="#portals" class="lh-btn lh-btn-secondary lh-btn-lg">
+                    <i class="fa-solid fa-users-gear"></i> Staff & Admin Logins
+                </a>
+            </div>
+
+            <!-- ================= LIVE METRICS STRIP ================= -->
+            <div id="metrics" class="lh-metrics-strip">
+                <div class="lh-metric-item">
+                    <div class="lh-metric-icon blue"><i class="fa-solid fa-book"></i></div>
+                    <div class="lh-metric-data">
+                        <span class="lh-metric-value" id="statTotalBooks">5,140+</span>
+                        <span class="lh-metric-label">Total Titles</span>
+                    </div>
+                </div>
+
+                <div class="lh-metric-divider"></div>
+
+                <div class="lh-metric-item">
+                    <div class="lh-metric-icon green"><i class="fa-solid fa-copy"></i></div>
+                    <div class="lh-metric-data">
+                        <span class="lh-metric-value" id="statAvailableCopies">5,130+</span>
+                        <span class="lh-metric-label">Copies Available</span>
+                    </div>
+                </div>
+
+                <div class="lh-metric-divider"></div>
+
+                <div class="lh-metric-item">
+                    <div class="lh-metric-icon purple"><i class="fa-solid fa-users"></i></div>
+                    <div class="lh-metric-data">
+                        <span class="lh-metric-value" id="statTotalMembers">10,120+</span>
+                        <span class="lh-metric-label">Active Members</span>
+                    </div>
+                </div>
+
+                <div class="lh-metric-divider"></div>
+
+                <div class="lh-metric-item">
+                    <div class="lh-metric-icon amber"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="lh-metric-data">
+                        <span class="lh-metric-value" id="statLatency">&lt; 3ms</span>
+                        <span class="lh-metric-label">Search Response</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= ROLE PORTALS ================= -->
+        <section id="portals" class="lh-portals-section">
+            <div class="lh-section-header">
+                <span class="lh-section-tag">Role-Based Access</span>
+                <h2 class="lh-section-title">Select Your Portal</h2>
+                <p class="lh-section-desc">
+                    Authorized access tailored for administrative oversight, circulation desk management, and patron self-service.
+                </p>
+            </div>
+
+            <div class="lh-portals-grid">
+                <!-- Admin Card -->
+                <div class="lh-portal-card" id="adminPortalCard">
+                    <div class="lh-portal-header">
+                        <div class="lh-portal-badge admin">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <span class="lh-role-pill">Administrator</span>
+                    </div>
+                    <h3 class="lh-portal-name">Admin Control Center</h3>
+                    <p class="lh-portal-desc">
+                        Full library health analytics, staff management, book and patron registries, fine collection audits, and point-in-time database snapshots.
+                    </p>
+                    <ul class="lh-portal-features">
+                        <li><i class="fa-solid fa-check"></i> System-wide KPI dashboard</li>
+                        <li><i class="fa-solid fa-check"></i> Staff & member access control</li>
+                        <li><i class="fa-solid fa-check"></i> Full database backup & restore</li>
+                    </ul>
+                    <a href="../Admin Dashboard(Siddhesh,Soham)/Final Project (Siddhesh & Soham)/login.html" class="lh-btn lh-btn-secondary lh-btn-full">
+                        Sign In as Admin <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Librarian Card -->
+                <div class="lh-portal-card featured" id="librarianPortalCard">
+                    <div class="lh-portal-header">
+                        <div class="lh-portal-badge librarian">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                        <span class="lh-role-pill primary">Circulation Desk</span>
+                    </div>
+                    <h3 class="lh-portal-name">Librarian Desk</h3>
+                    <p class="lh-portal-desc">
+                        Rapid checkout desk for issuing books, processing returns with automated overdue fine calculation, and handling patron holds.
+                    </p>
+                    <ul class="lh-portal-features">
+                        <li><i class="fa-solid fa-check"></i> Rapid book issue & barcode search</li>
+                        <li><i class="fa-solid fa-check"></i> 1-click return & fine calculation</li>
+                        <li><i class="fa-solid fa-check"></i> Student registry & hold fulfillments</li>
+                    </ul>
+                    <a href="../librarian Dashboard(Sid)/librarian/login.html" class="lh-btn lh-btn-primary lh-btn-full">
+                        Sign In as Librarian <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Member Card -->
+                <div class="lh-portal-card" id="memberPortalCard">
+                    <div class="lh-portal-header">
+                        <div class="lh-portal-badge member">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <span class="lh-role-pill">Student / Faculty</span>
+                    </div>
+                    <h3 class="lh-portal-name">Member Portal</h3>
+                    <p class="lh-portal-desc">
+                        Browse the university catalog, check real-time physical copy availability, track active loans, monitor due dates, and place reservations.
+                    </p>
+                    <ul class="lh-portal-features">
+                        <li><i class="fa-solid fa-check"></i> Fast catalog search with category filters</li>
+                        <li><i class="fa-solid fa-check"></i> Active loans & due date countdown</li>
+                        <li><i class="fa-solid fa-check"></i> Online book hold reservations</li>
+                    </ul>
+                    <a href="../Abhishek code (Member)/login.html" class="lh-btn lh-btn-secondary lh-btn-full">
+                        Sign In as Member <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= WORKFLOW HIGHLIGHTS ================= -->
+        <section id="workflow" class="lh-workflow-section">
+            <div class="lh-section-header">
+                <span class="lh-section-tag">Circulation Architecture</span>
+                <h2 class="lh-section-title">Designed for Operational Speed</h2>
+                <p class="lh-section-desc">Every step is optimized to minimize friction for librarians and students.</p>
+            </div>
+
+            <div class="lh-workflow-grid">
+                <div class="lh-workflow-step">
+                    <div class="lh-step-num">01</div>
+                    <div class="lh-step-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                    <h4>Instant Search</h4>
+                    <p>Sub-3ms indexed lookups across titles, authors, categories, and physical barcodes.</p>
+                </div>
+
+                <div class="lh-workflow-step">
+                    <div class="lh-step-num">02</div>
+                    <div class="lh-step-icon"><i class="fa-solid fa-barcode"></i></div>
+                    <h4>Physical Copy Issue</h4>
+                    <p>Concurrency-locked checkouts preventing double-issuance of physical book copies.</p>
+                </div>
+
+                <div class="lh-workflow-step">
+                    <div class="lh-step-num">03</div>
+                    <div class="lh-step-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <h4>Due Date Alerts</h4>
+                    <p>Automated overdue day tracking with strict 14-day standard borrowing windows.</p>
+                </div>
+
+                <div class="lh-workflow-step">
+                    <div class="lh-step-num">04</div>
+                    <div class="lh-step-icon"><i class="fa-solid fa-receipt"></i></div>
+                    <h4>Automated Return & Fine</h4>
+                    <p>Dynamic fine computation (₹5/day) with idempotent receipts and instant hold handoffs.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="lh-landing-footer">
+        <div class="lh-footer-content">
+            <div class="lh-footer-brand">
+                <div class="lh-brand-icon-sm">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                </div>
+                <span class="lh-brand-title">Library<strong>Hub</strong></span>
+                <p class="lh-footer-tagline">
+                    Enterprise campus library management platform with relational SQLite/MySQL backends.
+                </p>
+            </div>
+
+            <div class="lh-footer-links">
+                <h4>Quick Navigation</h4>
+                <a href="../Abhishek code (Member)/login.html">Member Portal</a>
+                <a href="../librarian Dashboard(Sid)/librarian/login.html">Librarian Circulation Desk</a>
+                <a href="../Admin Dashboard(Siddhesh,Soham)/Final Project (Siddhesh & Soham)/login.html">Admin Dashboard</a>
+            </div>
+
+            <div class="lh-footer-meta">
+                <h4>System Information</h4>
+                <p><i class="fa-solid fa-server"></i> Node.js & Express API</p>
+                <p><i class="fa-solid fa-database"></i> Dual-Dialect Relational Storage</p>
+                <p><i class="fa-solid fa-check-circle" style="color: var(--color-success);"></i> WCAG 2.2 AA Accessible</p>
+            </div>
+        </div>
+
+        <div class="lh-footer-bottom">
+            <p>© 2026 Library Hub. Built with production-grade reliability and clean UI/UX architecture.</p>
+            <div class="lh-footer-status">
+                <span class="lh-status-dot"></span> System Live & Operational
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

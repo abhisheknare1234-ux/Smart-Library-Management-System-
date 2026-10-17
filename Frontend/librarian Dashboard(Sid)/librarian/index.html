@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circulation Desk — Librarian Portal</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Shared Design System & Styles -->
+    <link rel="stylesheet" href="../../shared/design-system.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="dashboard-wrapper">
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div>
+            <div class="sidebar-logo">
+                <i class="fa-solid fa-book-open-reader"></i>
+                <h2>Library<strong>Hub</strong></h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active">
+                        <a href="index.html">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="issue-book.html">
+                            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                            <span>Issue Book</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="return-book.html">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>Return Book</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="books.html">
+                            <i class="fa-solid fa-book"></i>
+                            <span>Catalog & Copies</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="students.html">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Students Registry</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="fine.html">
+                            <i class="fa-solid fa-receipt"></i>
+                            <span>Fine Collection</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="reports.html">
+                            <i class="fa-solid fa-chart-column"></i>
+                            <span>Circulation Reports</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html">
+                            <i class="fa-solid fa-gear"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="sidebar-footer">
+            <a href="#" class="logout-btn">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="main-content">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="topbar-title">
+                    <h1>Circulation Desk</h1>
+                    <p>Daily loan checkouts, returns, and patron management.</p>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <span class="shift-badge">
+                    <i class="fa-solid fa-circle-check"></i> Shift Active
+                </span>
+
+                <div class="user-profile">
+                    <div class="profile-avatar" id="staffAvatar">S</div>
+                    <div class="profile-info">
+                        <span class="profile-name" id="staffName">Soham</span>
+                        <span class="profile-role" id="staffRole">Librarian</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content">
+
+            <!-- Quick Action Bar -->
+            <section class="quick-actions-card">
+                <h3><i class="fa-solid fa-bolt" style="color: var(--color-primary);"></i> Quick Circulation Actions</h3>
+                <div class="quick-actions-grid">
+                    <a href="issue-book.html" class="action-btn">
+                        <i class="fa-solid fa-plus-circle"></i>
+                        <span>Issue Book</span>
+                    </a>
+                    <a href="return-book.html" class="action-btn">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Return Book</span>
+                    </a>
+                    <a href="fine.html" class="action-btn">
+                        <i class="fa-solid fa-receipt"></i>
+                        <span>Collect Fines</span>
+                    </a>
+                    <a href="students.html" class="action-btn">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Search Student</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Operational Overview KPIs -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fa-solid fa-book"></i></div>
+                    <div class="stat-info">
+                        <span>Total Catalog Books</span>
+                        <h2 id="totalBooks">—</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fa-solid fa-copy"></i></div>
+                    <div class="stat-info">
+                        <span>Available Copies</span>
+                        <h2 id="availableBooks">—</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fa-solid fa-user-graduate"></i></div>
+                    <div class="stat-info">
+                        <span>Registered Students</span>
+                        <h2 id="totalStudents">—</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
+                    <div class="stat-info">
+                        <span>Issued Today</span>
+                        <h2 id="issuedToday">—</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon amber"><i class="fa-solid fa-clock"></i></div>
+                    <div class="stat-info">
+                        <span>Loans Due Today</span>
+                        <h2 id="dueToday">—</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="stat-info">
+                        <span>Overdue Loans</span>
+                        <h2 id="overdueCount">—</h2>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon amber"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                    <div class="stat-info">
+                        <span>Pending Fines</span>
+                        <h2 id="pendingFines">—</h2>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Circulation Feed -->
+            <section class="table-card">
+                <div class="table-card-header">
+                    <h3>Recent Circulation Transactions</h3>
+                    <a href="issue-book.html" class="btn-primary" style="text-decoration:none;">
+                        <i class="fa-solid fa-plus"></i> New Checkout
+                    </a>
+                </div>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Loan ID</th>
+                                <th>Book Title</th>
+                                <th>Patron</th>
+                                <th>Issue Date</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentIssuesBody">
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 24px; color: var(--color-text-muted);">
+                                    Loading live circulation records...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<!-- Scripts -->
+<script src="../../shared/ui-components.js"></script>
+<script src="js/api-client.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
